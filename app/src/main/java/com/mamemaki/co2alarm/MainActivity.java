@@ -1,17 +1,28 @@
 package com.mamemaki.co2alarm;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
+import android.media.AudioManager;
+import android.media.ToneGenerator;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-
+import android.widget.TextView;
 
 public class MainActivity extends ActionBarActivity {
+
+    private TextView mMessageText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        mMessageText = (TextView) findViewById(R.id.message);
 
         NetatmoIntentService.start(this, "", "");
     }
@@ -22,6 +33,21 @@ public class MainActivity extends ActionBarActivity {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        IntentFilter filter = new IntentFilter(NetatmoIntentService.BROADCAST);
+        LocalBroadcastManager.getInstance(this).registerReceiver(onNotice, filter);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+
+        LocalBroadcastManager.getInstance(this).unregisterReceiver(onNotice);
     }
 
     @Override
@@ -38,4 +64,26 @@ public class MainActivity extends ActionBarActivity {
 
         return super.onOptionsItemSelected(item);
     }
+
+    private BroadcastReceiver onNotice = new BroadcastReceiver() {
+        public void onReceive(Context context, Intent intent) {
+            final int status = intent.getIntExtra(NetatmoIntentService.EXTRA_STATUS, NetatmoIntentService.STATUS_NORMAL);
+            final int statusContinuousCount = intent.getIntExtra(NetatmoIntentService.EXTRA_STATUS_CONTINUOUS_COUNT, 0);
+
+            String msg;
+            switch (status) {
+                default:
+                case NetatmoIntentService.STATUS_NORMAL:
+                    msg = "CO2濃度は正常範囲内です。";
+                    break;
+                case NetatmoIntentService.STATUS_CO2_HIGH:
+                    msg = "CO2濃度が基準値を超えています。換気を行ってください。";
+                    break;
+            }
+            mMessageText.setText(msg);
+
+            ToneGenerator toneGenerator = new ToneGenerator(AudioManager.STREAM_SYSTEM, ToneGenerator.MAX_VOLUME);
+            toneGenerator.startTone(ToneGenerator.TONE_PROP_BEEP);
+        }
+    };
 }
