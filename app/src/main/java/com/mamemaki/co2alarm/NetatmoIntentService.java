@@ -10,11 +10,9 @@ import android.widget.Toast;
  * An {@link IntentService} subclass for handling asynchronous task requests in
  * a service on a separate handler thread.
  * <p/>
- * TODO: Customize class - update intent actions, extra parameters and static
  * helper methods.
  */
 public class NetatmoIntentService extends IntentService {
-    // TODO: Rename parameters
     private static final String EXTRA_PARAM1 = "com.mamemaki.co2alarm.extra.PARAM1";
     private static final String EXTRA_PARAM2 = "com.mamemaki.co2alarm.extra.PARAM2";
 
@@ -27,7 +25,6 @@ public class NetatmoIntentService extends IntentService {
      *
      * @see IntentService
      */
-    // TODO: Customize helper method
     public static void start(Context context, String param1, String param2) {
         Intent intent = new Intent(context, NetatmoIntentService.class);
         intent.setAction("com.mamemaki.co2alarm.action.start");
