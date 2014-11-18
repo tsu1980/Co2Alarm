@@ -43,8 +43,8 @@ public class NetatmoIntentService extends IntentService {
     public static final int STATUS_NORMAL = 0;
     public static final int STATUS_CO2_HIGH = 1;
 
-    private static final long FETCH_INTERVAL = 5*1000;
-//    private static final long FETCH_INTERVAL = 5*60*1000;
+//    private static final long FETCH_INTERVAL = 5*1000;
+    private static final long FETCH_INTERVAL = 5*60*1000;
     private static final long THRESHOLD_CO2 = 2200;
 
     private Context mContext;

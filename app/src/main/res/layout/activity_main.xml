@@ -21,4 +21,47 @@
         android:layout_marginTop="91dp"
         android:onClick="onBeepButtonClicked" />
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="CO2:"
+        android:id="@+id/co2_label"
+        android:layout_centerVertical="true"
+        android:layout_alignLeft="@+id/button1"
+        android:layout_alignStart="@+id/button1" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Large Text"
+        android:id="@+id/co2"
+        android:layout_toEndOf="@+id/button1"
+        android:layout_alignTop="@+id/co2_label"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Last updated:"
+        android:id="@+id/last_updated_label"
+        android:layout_alignTop="@+id/last_updated"
+        android:layout_alignLeft="@+id/co2_label"
+        android:layout_alignStart="@+id/co2_label" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Large Text"
+        android:id="@+id/last_updated"
+        android:layout_toEndOf="@+id/last_updated_label"
+        android:layout_below="@+id/co2"
+        android:layout_toRightOf="@+id/last_updated_label"
+        android:layout_alignRight="@+id/co2"
+        android:layout_alignEnd="@+id/co2" />
+
 </RelativeLayout>

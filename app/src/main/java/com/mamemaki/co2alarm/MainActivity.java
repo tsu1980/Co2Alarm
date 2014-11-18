@@ -14,9 +14,13 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
+import java.util.Date;
+
 public class MainActivity extends ActionBarActivity {
 
     private TextView mMessageText;
+    private TextView mCo2Text;
+    private TextView mLastUpdatedText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,6 +28,12 @@ public class MainActivity extends ActionBarActivity {
         setContentView(R.layout.activity_main);
 
         mMessageText = (TextView) findViewById(R.id.message);
+        mCo2Text = (TextView) findViewById(R.id.co2);
+        mLastUpdatedText = (TextView) findViewById(R.id.last_updated);
+
+        mLastUpdatedText.setText("");
+        mCo2Text.setText("0");
+        mMessageText.setText("");
 
         NetatmoIntentService.start(this, "", "");
     }
@@ -70,6 +80,7 @@ public class MainActivity extends ActionBarActivity {
         public void onReceive(Context context, Intent intent) {
             final int status = intent.getIntExtra(NetatmoIntentService.EXTRA_STATUS, NetatmoIntentService.STATUS_NORMAL);
             final int statusContinuousCount = intent.getIntExtra(NetatmoIntentService.EXTRA_STATUS_CONTINUOUS_COUNT, 0);
+            final int co2 = intent.getIntExtra(NetatmoIntentService.EXTRA_CO2, 0);
 
             String msg;
             switch (status) {
@@ -80,8 +91,20 @@ public class MainActivity extends ActionBarActivity {
                 case NetatmoIntentService.STATUS_CO2_HIGH:
                     msg = "CO2濃度が基準値を超えています。換気を行ってください。";
                     beep();
+                    beep();
+                    beep();
+                    try {
+                        Thread.sleep(400);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    beep();
+                    beep();
+                    beep();
                     break;
             }
+            mLastUpdatedText.setText(new Date().toString());
+            mCo2Text.setText(String.valueOf(co2));
             mMessageText.setText(msg);
         }
     };
