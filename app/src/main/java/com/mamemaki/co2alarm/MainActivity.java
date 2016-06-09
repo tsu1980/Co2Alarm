@@ -90,17 +90,8 @@ public class MainActivity extends ActionBarActivity {
                     break;
                 case NetatmoIntentService.STATUS_CO2_HIGH:
                     msg = "CO2濃度が基準値を超えています。換気を行ってください。";
-                    beep();
-                    beep();
-                    beep();
-                    try {
-                        Thread.sleep(400);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                    beep();
-                    beep();
-                    beep();
+
+                    beepAccordingToCo2(co2);
                     break;
             }
             mLastUpdatedText.setText(new Date().toString());
@@ -108,6 +99,54 @@ public class MainActivity extends ActionBarActivity {
             mMessageText.setText(msg);
         }
     };
+
+    private void beepAccordingToCo2(int co2) {
+        if (co2 > 6000) {
+            beepTempo(6, 6, 0);
+        } else if (co2 > 5500) {
+            beepTempo(5, 5, 1);
+        } else if (co2 > 5000) {
+            beepTempo(5, 5, 0);
+        } else if (co2 > 4500) {
+            beepTempo(4, 4, 1);
+        } else if (co2 > 4000) {
+            beepTempo(4, 4, 0);
+        } else if (co2 > 3500) {
+            beepTempo(3, 3, 1);
+        } else if (co2 > 3000) {
+            beepTempo(3, 3, 0);
+        } else if (co2 > 2500) {
+            beepTempo(2, 2, 1);
+        } else if (co2 > 2000) {
+            beepTempo(2, 2, 0);
+        }
+    }
+
+    private void beepTempo(int one, int two, int three) {
+        beep(one);
+        if (two > 0) {
+            try {
+                Thread.sleep(400);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            beep(two);
+        }
+        if (three > 0) {
+            try {
+                Thread.sleep(400);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            beep(three);
+        }
+    }
+
+    private void beep(int count) {
+        for (int i = 0; i < count; i++) {
+            beep();
+        }
+    }
 
     private void beep() {
         ToneGenerator toneGenerator = new ToneGenerator(AudioManager.STREAM_SYSTEM, ToneGenerator.MAX_VOLUME);
